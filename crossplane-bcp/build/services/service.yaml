@@ -1,0 +1,10 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: bcp-services
+spec:
+  crossplane:
+    version: ">=v1.13.0"
+  dependsOn:
+    - provider: xpkg.upbound.io/crossplane-contrib/provider-helm
+    - provider: xpkg.upbound.io/crossplane-contrib/provider-kubernetes

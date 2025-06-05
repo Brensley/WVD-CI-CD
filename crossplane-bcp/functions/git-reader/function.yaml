@@ -1,0 +1,6 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Function
+metadata:
+  name: function-git-reader
+spec:
+  image: xpkg.upbound.io/crossplane-contrib/function-git:v0.2.0
