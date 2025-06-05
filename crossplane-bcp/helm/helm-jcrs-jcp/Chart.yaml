@@ -1,0 +1,4 @@
+apiVersion: v2
+name: helm-jcrs-jcp
+description: Helm chart for JCRS and JCP components
+version: 0.1.0

@@ -1,0 +1,4 @@
+apiVersion: v2
+name: helm-base
+description: Base Helm chart for BCP deployment
+version: 0.1.0
