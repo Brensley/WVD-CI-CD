@@ -8,3 +8,7 @@ spec:
   dependsOn:
     - provider: xpkg.upbound.io/crossplane-contrib/provider-helm
     - provider: xpkg.upbound.io/crossplane-contrib/provider-kubernetes
+    - provider: xpkg.upbound.io/upbound/provider-aws
+    - provider: xpkg.upbound.io/crossplane-contrib/provider-oci
+    - provider: xpkg.upbound.io/crossplane-contrib/provider-git
+

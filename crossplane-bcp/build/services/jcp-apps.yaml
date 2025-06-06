@@ -1,0 +1,11 @@
+apiVersion: argocd.crossplane.io/v1alpha1
+kind: Application
+metadata:
+  name: jcp-apps
+spec:
+  forProvider:
+    sourceRepoURL: https://example.com/git/jcp-manifests
+    path: apps
+    targetRevision: HEAD
+  providerConfigRef:
+    name: git-default
