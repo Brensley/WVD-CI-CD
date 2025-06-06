@@ -1,0 +1,9 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: jcp-config-bundle
+spec:
+  dependsOn:
+    - configuration: xpkg.upbound.io/example/bcp-services
+  crossplane:
+    version: ">=v1.13.0"

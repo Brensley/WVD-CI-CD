@@ -1,0 +1,12 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: cilium
+spec:
+  forProvider:
+    chart: cilium
+    repository: https://helm.cilium.io/
+    version: 1.14.6
+    namespace: kube-system
+  providerConfigRef:
+    name: helm-default

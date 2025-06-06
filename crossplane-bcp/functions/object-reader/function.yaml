@@ -1,0 +1,6 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Function
+metadata:
+  name: function-object-reader
+spec:
+  image: xpkg.upbound.io/crossplane-contrib/function-go-runner:v0.4.0

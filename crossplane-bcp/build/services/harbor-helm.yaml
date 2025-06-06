@@ -1,0 +1,15 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: harbor
+spec:
+  forProvider:
+    chart: harbor
+    repository: https://helm.goharbor.io
+    version: 1.14.0
+    namespace: harbor
+    values:
+      expose:
+        type: clusterIP
+  providerConfigRef:
+    name: helm-default

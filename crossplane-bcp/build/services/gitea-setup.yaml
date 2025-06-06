@@ -1,0 +1,12 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: gitea
+spec:
+  forProvider:
+    chart: gitea
+    repository: https://dl.gitea.io/charts/
+    version: 10.1.0
+    namespace: gitea
+  providerConfigRef:
+    name: helm-default
