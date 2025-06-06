@@ -62,12 +62,14 @@ push_helm:
 
 destroy_bcp:
   stage: destroy
+  image: crossplane/crossplane-cli:latest
   script:
     - crossplane xpkg yank ${DEV_REGISTRY}/bcp-config-bundle:latest || true
     - ./crossplane-bcp/scripts/destroy_bcp.sh
 
 destroy_jcp:
   stage: destroy
+  image: crossplane/crossplane-cli:latest
   script:
     - crossplane xpkg yank ${DEV_REGISTRY}/jcp-config-bundle:latest || true
     - ./crossplane-bcp/scripts/destroy_jcp.sh
