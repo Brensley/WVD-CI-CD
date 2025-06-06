@@ -25,3 +25,22 @@ spec:
           toFieldPath: spec.forProvider.region
         - fromFieldPath: spec.parameters.version
           toFieldPath: spec.forProvider.version
+    - name: nodegroup
+      base:
+        apiVersion: eks.aws.upbound.io/v1beta1
+        kind: NodeGroup
+        spec:
+          forProvider:
+            region: us-east-1
+            clusterNameSelector:
+              matchControllerRef: true
+            nodeRoleArn: example
+            subnetIds:
+              - subnet-example
+            scalingConfig:
+              desiredSize: 2
+              maxSize: 2
+              minSize: 1
+      patches:
+        - fromFieldPath: spec.parameters.region
+          toFieldPath: spec.forProvider.region
