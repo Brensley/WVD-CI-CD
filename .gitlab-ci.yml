@@ -1,0 +1,67 @@
+stages:
+  - build
+  - push
+  - destroy
+
+variables:
+  DEV_REGISTRY: "registry.example.com/dev"
+
+build_xpkgs:
+  stage: build
+  image: crossplane/crossplane-cli:latest
+  script:
+    - crossplane xpkg build --name provider-configs.xpkg crossplane-bcp/build/providerConfigs
+    - crossplane xpkg build --name services.xpkg crossplane-bcp/build/services
+    - crossplane xpkg build --name config-bundle.xpkg crossplane-bcp/config-bundle
+    - crossplane xpkg build --name jcp-config-bundle.xpkg crossplane-bcp/jcp-config-bundle
+    - crossplane xpkg build --name function-object-reader.xpkg crossplane-bcp/functions/object-reader
+    - crossplane xpkg build --name function-git-reader.xpkg crossplane-bcp/functions/git-reader
+  artifacts:
+    paths:
+      - provider-configs.xpkg
+      - services.xpkg
+      - config-bundle.xpkg
+      - jcp-config-bundle.xpkg
+      - function-object-reader.xpkg
+      - function-git-reader.xpkg
+
+build_helm:
+  stage: build
+  image: alpine/helm:3.8.2
+  script:
+    - helm package crossplane-bcp/helm/helm-base
+    - helm package crossplane-bcp/helm/helm-jcrs-jcp
+  artifacts:
+    paths:
+      - helm-base-0.1.0.tgz
+      - helm-jcrs-jcp-0.1.0.tgz
+
+push_xpkgs:
+  stage: push
+  image: crossplane/crossplane-cli:latest
+  script:
+    - crossplane xpkg push provider-configs.xpkg ${DEV_REGISTRY}/provider-configs:latest
+    - crossplane xpkg push services.xpkg ${DEV_REGISTRY}/bcp-services:latest
+    - crossplane xpkg push config-bundle.xpkg ${DEV_REGISTRY}/bcp-config-bundle:latest
+    - crossplane xpkg push jcp-config-bundle.xpkg ${DEV_REGISTRY}/jcp-config-bundle:latest
+    - crossplane xpkg push function-object-reader.xpkg ${DEV_REGISTRY}/function-object-reader:latest
+    - crossplane xpkg push function-git-reader.xpkg ${DEV_REGISTRY}/function-git-reader:latest
+
+push_helm:
+  stage: push
+  image: alpine/helm:3.8.2
+  script:
+    - helm push helm-base-0.1.0.tgz oci://${DEV_REGISTRY}
+    - helm push helm-jcrs-jcp-0.1.0.tgz oci://${DEV_REGISTRY}
+
+destroy_bcp:
+  stage: destroy
+  script:
+    - crossplane xpkg yank ${DEV_REGISTRY}/bcp-config-bundle:latest || true
+    - ./crossplane-bcp/scripts/destroy_bcp.sh
+
+destroy_jcp:
+  stage: destroy
+  script:
+    - crossplane xpkg yank ${DEV_REGISTRY}/jcp-config-bundle:latest || true
+    - ./crossplane-bcp/scripts/destroy_jcp.sh

@@ -1,0 +1,11 @@
+argocd:
+  server:
+    extraArgs: ["--insecure"]
+keycloak:
+  replicaCount: 1
+netbox:
+  replicaCount: 1
+backstage:
+  replicaCount: 1
+certManager:
+  installCRDs: true

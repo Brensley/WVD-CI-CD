@@ -1,0 +1,27 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: eks-cluster
+  labels:
+    provider: aws
+spec:
+  compositeTypeRef:
+    apiVersion: compute.jne.rd/v1alpha1
+    kind: XCluster
+  resources:
+    - name: eks
+      base:
+        apiVersion: eks.aws.upbound.io/v1beta1
+        kind: Cluster
+        spec:
+          forProvider:
+            region: us-east-1
+            version: "1.29"
+            roleArn: example
+            resourcesVpcConfig:
+              endpointPublicAccess: true
+      patches:
+        - fromFieldPath: spec.parameters.region
+          toFieldPath: spec.forProvider.region
+        - fromFieldPath: spec.parameters.version
+          toFieldPath: spec.forProvider.version

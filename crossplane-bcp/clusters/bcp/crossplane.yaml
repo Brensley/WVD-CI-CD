@@ -1,0 +1,6 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: bcp
+spec:
+  package: ${DEV_REGISTRY}/bcp-config-bundle:latest
