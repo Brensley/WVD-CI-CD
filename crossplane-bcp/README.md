@@ -1,11 +1,12 @@
 # Crossplane BCP Deployment
 
-This directory contains the files and folder structure for deploying the Base Cluster Platform (BCP) and JCP clusters using Crossplane. The flow follows the diagrams provided and uses a GitLab CI pipeline to build and push Crossplane packages.
+This directory houses the resources required to build and deploy the Base Control Plane (BCP) and the downstream JCP using Crossplane. The folder structure mirrors the flow diagrams described in the architecture documentation.
 
 ```
 crossplane-bcp/
+├── ARCHITECTURE.md           # High level architecture overview
 ├── build/
-│   ├── providerConfigs/      # Crossplane provider and provider configs
+│   ├── providerConfigs/      # Crossplane providers and configs
 │   └── services/             # Configuration services bundled as xpkg
 ├── config-bundle/            # Bundle combining services and providers
 ├── functions/
@@ -13,11 +14,13 @@ crossplane-bcp/
 │   └── object-reader/        # Function package to read cluster objects
 ├── helm/
 │   ├── helm-base/            # Base Helm chart
-│   └── helm-jcrs-jcp/        # Helm chart for JCRS/JCP
+│   └── helm-jcrs-jcp/        # Helm chart for JCRS/JCP workloads
 ├── clusters/
-│   ├── bcp/                  # Manifests to install BCP cluster
-│   └── jcp/                  # Manifests to install JCP cluster
-└── README.md
+│   ├── bcp/                  # Manifests to install the BCP
+│   └── jcp/                  # Manifests to install the JCP
 ```
 
-The `.gitlab-ci.yml` file in the repo root builds these packages and pushes them to the OCI registry defined by `DEV_REGISTRY`.
+## GitLab CI Pipeline
+The root `.gitlab-ci.yml` builds Crossplane packages and Helm charts and pushes them to the registry defined by `DEV_REGISTRY`. These packages are then pulled and deployed by the CLI as shown in the flowcharts.
+
+Refer to [ARCHITECTURE.md](ARCHITECTURE.md) for more background on execution environments, trust zones and control plane concepts.
