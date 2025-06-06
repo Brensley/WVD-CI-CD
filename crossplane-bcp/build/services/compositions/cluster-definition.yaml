@@ -14,17 +14,24 @@ spec:
     - name: v1alpha1
       served: true
       referenceable: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          properties:
-            spec:
-              type: object
-              properties:
-                parameters:
-                  type: object
-                  properties:
-                    region:
-                      type: string
-                    version:
-                      type: string
+        schema:
+          openAPIV3Schema:
+            type: object
+            properties:
+              spec:
+                type: object
+                properties:
+                  parameters:
+                    type: object
+                    properties:
+                      region:
+                        type: string
+                      version:
+                        type: string
+                    required:
+                      - region
+                      - version
+                required:
+                  - parameters
+            required:
+              - spec
