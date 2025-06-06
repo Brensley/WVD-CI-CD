@@ -11,3 +11,4 @@ spec:
     - provider: xpkg.upbound.io/upbound/provider-aws
     - provider: xpkg.upbound.io/crossplane-contrib/provider-oci
     - provider: xpkg.upbound.io/crossplane-contrib/provider-git
+

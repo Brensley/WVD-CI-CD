@@ -14,6 +14,12 @@ build_xpkgs:
     - crossplane xpkg build --name services.xpkg crossplane-bcp/build/services
     - crossplane xpkg build --name config-bundle.xpkg crossplane-bcp/config-bundle
     - crossplane xpkg build --name jcp-config-bundle.xpkg crossplane-bcp/jcp-config-bundle
+
+build_packages:
+  stage: build
+  image: crossplane/crossplane-cli:latest
+  script:
+    - crossplane xpkg build --name config-bundle.xpkg crossplane-bcp/config-bundle
     - crossplane xpkg build --name function-object-reader.xpkg crossplane-bcp/functions/object-reader
     - crossplane xpkg build --name function-git-reader.xpkg crossplane-bcp/functions/git-reader
   artifacts:
@@ -65,3 +71,14 @@ destroy_jcp:
   script:
     - crossplane xpkg yank ${DEV_REGISTRY}/jcp-config-bundle:latest || true
     - ./crossplane-bcp/scripts/destroy_jcp.sh
+      - config-bundle.xpkg
+      - function-object-reader.xpkg
+      - function-git-reader.xpkg
+
+push_packages:
+  stage: push
+  image: crossplane/crossplane-cli:latest
+  script:
+    - crossplane xpkg push config-bundle.xpkg ${DEV_REGISTRY}/bcp-config-bundle:latest
+    - crossplane xpkg push function-object-reader.xpkg ${DEV_REGISTRY}/function-object-reader:latest
+    - crossplane xpkg push function-git-reader.xpkg ${DEV_REGISTRY}/function-git-reader:latest
