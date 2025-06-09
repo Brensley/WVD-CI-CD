@@ -20,7 +20,7 @@ Refer to `crossplane-bcp/README.md` for detailed instructions on deploying the B
 
 The `.gitlab-ci.yml` pipeline builds, pushes and now deploys the Crossplane configuration. To execute the pipeline end-to-end:
 
-1. Set `DEV_REGISTRY` to the container registry where packages should be pushed.
+1. Set `DEV_REGISTRY` to the container registry where packages should be pushed. The default value in `.gitlab-ci.yml` is `registry.example.com/dev`, but you must replace this with the URL of your actual registry (GitLab registry, ECR, etc.) for the push stage to succeed.
 2. Provide a `KUBECONFIG_DATA` variable in GitLab CI containing credentials for the target Kubernetes cluster.
 3. Trigger the pipeline. After the push stage completes, the `deploy_bcp` and `deploy_jcp` jobs apply the manifests under `crossplane-bcp/clusters/` using `kubectl`.
 
