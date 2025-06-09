@@ -24,3 +24,15 @@ The `.gitlab-ci.yml` pipeline builds, pushes and now deploys the Crossplane conf
 2. Provide a `KUBECONFIG_DATA` variable in GitLab CI containing credentials for the target Kubernetes cluster.
 3. Trigger the pipeline. After the push stage completes, the `deploy_bcp` and `deploy_jcp` jobs apply the manifests under `crossplane-bcp/clusters/` using `kubectl`.
 
+
+### Extracting the kubeconfig
+
+To populate the `KUBECONFIG_DATA` variable, capture the kubeconfig for the cluster you wish to deploy to. Depending on your provider you can use commands such as:
+
+```bash
+aws eks update-kubeconfig --name <cluster>
+az aks get-credentials --resource-group <rg> --name <cluster>
+kubectl config view --minify --raw > kubeconfig
+```
+
+Open the resulting file and paste its contents into the `KUBECONFIG_DATA` variable in GitLab CI.
