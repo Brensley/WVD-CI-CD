@@ -75,9 +75,6 @@ destroy_jcp:
   script:
     - crossplane xpkg yank ${DEV_REGISTRY}/jcp-config-bundle:latest || true
     - ./crossplane-bcp/scripts/destroy_jcp.sh
-      - config-bundle.xpkg
-      - function-object-reader.xpkg
-      - function-git-reader.xpkg
 
 push_packages:
   stage: push
