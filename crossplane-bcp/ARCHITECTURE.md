@@ -34,3 +34,7 @@ The Base Control Plane (BCP) is a single‑node installation used to bootstrap t
 
 - **BCP NodeGroup:** `t3.medium` instances with 50Gi disks.
 - **JCP NodeGroup:** `t3.large` instances with 100Gi disks and a desired size of three nodes to run ArgoCD, Harbor and Keycloak workloads.
+
+The `diskSize` parameter can be omitted if the default EKS volume size is
+sufficient, but the values above provide a good starting point for most
+installations.
