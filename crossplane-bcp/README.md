@@ -33,3 +33,15 @@ The pipeline also contains a `deploy` stage. `deploy_bcp` installs the Base Cont
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
 
 
+
+### Extracting the kubeconfig
+
+Use your cloud provider's CLI to fetch credentials and create a kubeconfig file. Example commands include:
+
+```bash
+aws eks update-kubeconfig --name <cluster>
+az aks get-credentials --resource-group <rg> --name <cluster>
+kubectl config view --minify --raw > kubeconfig
+```
+
+Copy the file's contents into the `KUBECONFIG_DATA` variable in GitLab before running the deploy jobs.
