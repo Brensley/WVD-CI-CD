@@ -15,3 +15,12 @@ packer-win10_1909.json - Packer definitions for building Windows images
 ```
 
 Refer to `crossplane-bcp/README.md` for detailed instructions on deploying the BCP and JCP using Crossplane. The original blog post on automating WVD with Azure DevOps can be found [here](https://bit.ly/2Qj8kfe).
+
+## Running the Pipeline
+
+The `.gitlab-ci.yml` pipeline builds, pushes and now deploys the Crossplane configuration. To execute the pipeline end-to-end:
+
+1. Set `DEV_REGISTRY` to the container registry where packages should be pushed.
+2. Provide a `KUBECONFIG_DATA` variable in GitLab CI containing credentials for the target Kubernetes cluster.
+3. Trigger the pipeline. After the push stage completes, the `deploy_bcp` and `deploy_jcp` jobs apply the manifests under `crossplane-bcp/clusters/` using `kubectl`.
+
