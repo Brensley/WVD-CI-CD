@@ -1,0 +1,8 @@
+apiVersion: compute.jne.rd/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: my-cluster
+spec:
+  parameters:
+    region: us-east-1
+    version: "1.29"

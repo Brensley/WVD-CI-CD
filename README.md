@@ -23,4 +23,9 @@ The `.gitlab-ci.yml` pipeline builds, pushes and now deploys the Crossplane conf
 1. Set `DEV_REGISTRY` to the container registry where packages should be pushed.
 2. Provide a `KUBECONFIG_DATA` variable in GitLab CI containing credentials for the target Kubernetes cluster.
 3. Trigger the pipeline. After the push stage completes, the `deploy_bcp` and `deploy_jcp` jobs apply the manifests under `crossplane-bcp/clusters/` using `kubectl`.
+4. Once deployment is complete, create a cluster by applying the included `ClusterClaim` manifest:
+   ```bash
+   kubectl apply -f crossplane-bcp/clusters/jcp/clusterclaim.yaml
+   ```
+   Edit the region or version fields in this file if your environment requires different settings.
 

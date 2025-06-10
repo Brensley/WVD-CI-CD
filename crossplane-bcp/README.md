@@ -30,6 +30,14 @@ Optional jobs invoke the scripts in `scripts/` to destroy the BCP or JCP cluster
 
 The pipeline also contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane by applying `clusters/bcp/crossplane.yaml`, then `deploy_jcp` installs the JCP using the manifests under `clusters/jcp/`. These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster.
 
+After the deployment jobs complete you can request a new EKS cluster by applying the provided ClusterClaim:
+
+```bash
+kubectl apply -f clusters/jcp/clusterclaim.yaml
+```
+
+Modify the `region` or `version` parameters in this file to match your requirements.
+
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
 
 
