@@ -38,3 +38,21 @@ The Base Control Plane (BCP) is a single‑node installation used to bootstrap t
 The `diskSize` parameter can be omitted if the default EKS volume size is
 sufficient, but the values above provide a good starting point for most
 installations.
+
+### AWS Prerequisites
+
+The EKS composition in `build/services/compositions/eks-composition.yaml`
+includes placeholder values for the cluster and node group IAM roles and the
+subnet IDs. Replace these with valid values from your AWS account before
+deploying the control plane:
+
+- `roleArn` must reference an IAM role with permissions for the EKS control
+  plane, for example `arn:aws:iam::123456789012:role/eks-control-plane`.
+- `nodeRoleArn` values should be IAM roles used by each NodeGroup,
+  such as `arn:aws:iam::123456789012:role/eks-node-role` for the BCP and
+  `arn:aws:iam::123456789012:role/eks-jcp-node-role` for the JCP.
+- `subnetIds` must list the actual subnet IDs where the nodes will run,
+  e.g. `subnet-0123456789abcdef0`.
+
+Specify the `instanceType` and `diskSize` parameters for each NodeGroup
+to match the recommended sizes above.
