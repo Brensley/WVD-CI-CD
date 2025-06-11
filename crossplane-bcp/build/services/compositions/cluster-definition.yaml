@@ -36,6 +36,20 @@ spec:
                         type: string
                       jcpDiskSize:
                         type: integer
+                      controlPlaneRoleArn:
+                        type: string
+                      nodeRoleArn:
+                        type: string
+                      nodeSubnetIds:
+                        type: array
+                        items:
+                          type: string
+                      jcpNodeRoleArn:
+                        type: string
+                      jcpSubnetIds:
+                        type: array
+                        items:
+                          type: string
                     required:
                       - region
                       - version
