@@ -58,6 +58,7 @@ kubectl config view --minify --raw > kubeconfig
 ```
 
 Copy the file's contents into the `KUBECONFIG_DATA` variable in GitLab before running the deploy jobs.
+Ensure Crossplane is already installed in the cluster referenced by this kubeconfig.
 
 ### Harbor Access
 
