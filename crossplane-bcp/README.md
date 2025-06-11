@@ -32,6 +32,19 @@ The pipeline also contains a `deploy` stage. `deploy_bcp` installs the Base Cont
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
 
+### Required Secrets
+
+The provider configuration manifests expect three Kubernetes `Secret` objects to
+exist in the `crossplane-system` namespace. Each secret must contain a key named
+`creds` with the appropriate credentials:
+
+- `aws-creds` — credentials for the AWS provider
+- `oci-creds` — credentials for the OCI provider
+- `git-creds` — credentials for the Git provider
+
+Create these secrets before running the pipeline so the providers can
+authenticate to their respective services.
+
 
 
 ### Extracting the kubeconfig
