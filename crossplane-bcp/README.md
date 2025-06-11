@@ -35,12 +35,14 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution en
 ### Required Secrets
 
 The provider configuration manifests expect three Kubernetes `Secret` objects to
-exist in the `crossplane-system` namespace. Each secret must contain a key named
-`creds` with the appropriate credentials:
+exist in the `crossplane-system` namespace. Each secret must contain credentials
+under a key named `creds`.
 
-- `aws-creds` — credentials for the AWS provider
-- `oci-creds` — credentials for the OCI provider
-- `git-creds` — credentials for the Git provider
+| Secret name | Expected key | Used by |
+|-------------|--------------|---------|
+| `aws-creds` | `creds`      | AWS provider |
+| `oci-creds` | `creds`      | OCI provider |
+| `git-creds` | `creds`      | Git provider |
 
 Create these secrets before running the pipeline so the providers can
 authenticate to their respective services.
