@@ -28,7 +28,14 @@ crossplane-bcp/
 The `.gitlab-ci.yml` file at the repo root packages these resources and pushes them to the container registry specified by `DEV_REGISTRY`.
 Optional jobs invoke the scripts in `scripts/` to destroy the BCP or JCP clusters when scheduled.
 
-The pipeline also contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane by applying `clusters/bcp/crossplane.yaml`, then `deploy_jcp` installs the JCP using the manifests under `clusters/jcp/`. These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster. Ensure Crossplane is already installed on that cluster.
+The pipeline also contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane by applying `clusters/bcp/crossplane.yaml`, then `deploy_jcp` installs the JCP using the manifests under `clusters/jcp/`.
+These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster.
+Retrieve the kubeconfig using your provider's CLI, for example:
+```bash
+aws eks update-kubeconfig --name <cluster>
+```
+Paste the file's contents into the GitLab CI variable `KUBECONFIG_DATA`.
+Ensure Crossplane is already installed on that cluster before triggering the deploy jobs.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
 
