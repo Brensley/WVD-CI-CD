@@ -16,6 +16,12 @@ build_xpkgs:
     - crossplane xpkg build --name services.xpkg crossplane-bcp/build/services
     - crossplane xpkg build --name config-bundle.xpkg crossplane-bcp/config-bundle
     - crossplane xpkg build --name jcp-config-bundle.xpkg crossplane-bcp/jcp-config-bundle
+  artifacts:
+    paths:
+      - provider-configs.xpkg
+      - services.xpkg
+      - config-bundle.xpkg
+      - jcp-config-bundle.xpkg
 
 build_packages:
   stage: build
@@ -89,6 +95,7 @@ deploy_bcp:
   stage: deploy
   image: bitnami/kubectl:latest
   dependencies:
+    - build_xpkgs
     - build_packages
   script:
     - echo "$KUBECONFIG_DATA" > ${KUBECONFIG}
