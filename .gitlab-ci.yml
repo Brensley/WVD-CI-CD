@@ -1,10 +1,10 @@
 stages:
   - build
-  - push
+  - deploy
   - destroy
 
 variables:
-  DEV_REGISTRY: "registry.example.com/dev"
+  KUBECONFIG: "$CI_PROJECT_DIR/kubeconfig"
 
 build_xpkgs:
   stage: build
@@ -42,45 +42,40 @@ build_helm:
       - helm-base-0.1.0.tgz
       - helm-jcrs-jcp-0.1.0.tgz
 
-push_xpkgs:
-  stage: push
-  image: crossplane/crossplane-cli:latest
-  script:
-    - crossplane xpkg push provider-configs.xpkg ${DEV_REGISTRY}/provider-configs:latest
-    - crossplane xpkg push services.xpkg ${DEV_REGISTRY}/bcp-services:latest
-    - crossplane xpkg push config-bundle.xpkg ${DEV_REGISTRY}/bcp-config-bundle:latest
-    - crossplane xpkg push jcp-config-bundle.xpkg ${DEV_REGISTRY}/jcp-config-bundle:latest
-    - crossplane xpkg push function-object-reader.xpkg ${DEV_REGISTRY}/function-object-reader:latest
-    - crossplane xpkg push function-git-reader.xpkg ${DEV_REGISTRY}/function-git-reader:latest
-
-push_helm:
-  stage: push
-  image: alpine/helm:3.8.2
-  script:
-    - helm push helm-base-0.1.0.tgz oci://${DEV_REGISTRY}
-    - helm push helm-jcrs-jcp-0.1.0.tgz oci://${DEV_REGISTRY}
-
 destroy_bcp:
   stage: destroy
   image: crossplane/crossplane-cli:latest
   script:
-    - crossplane xpkg yank ${DEV_REGISTRY}/bcp-config-bundle:latest || true
     - ./crossplane-bcp/scripts/destroy_bcp.sh
 
 destroy_jcp:
   stage: destroy
   image: crossplane/crossplane-cli:latest
   script:
-    - crossplane xpkg yank ${DEV_REGISTRY}/jcp-config-bundle:latest || true
     - ./crossplane-bcp/scripts/destroy_jcp.sh
-      - config-bundle.xpkg
-      - function-object-reader.xpkg
-      - function-git-reader.xpkg
 
-push_packages:
-  stage: push
+deploy_bcp:
+  stage: deploy
   image: crossplane/crossplane-cli:latest
   script:
-    - crossplane xpkg push config-bundle.xpkg ${DEV_REGISTRY}/bcp-config-bundle:latest
-    - crossplane xpkg push function-object-reader.xpkg ${DEV_REGISTRY}/function-object-reader:latest
-    - crossplane xpkg push function-git-reader.xpkg ${DEV_REGISTRY}/function-git-reader:latest
+    - echo "$KUBECONFIG_DATA" > ${KUBECONFIG}
+    - kubectl crossplane install configuration -f provider-configs.xpkg
+    - kubectl crossplane install configuration -f services.xpkg
+    - kubectl crossplane install configuration -f config-bundle.xpkg
+
+deploy_jcp:
+  stage: deploy
+  image: crossplane/crossplane-cli:latest
+  needs: ["deploy_bcp"]
+  script:
+    - echo "$KUBECONFIG_DATA" > ${KUBECONFIG}
+    - kubectl crossplane install configuration -f jcp-config-bundle.xpkg
+
+apply_clusterclaim:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  needs: ["deploy_jcp"]
+  script:
+    - echo "$KUBECONFIG_DATA" > ${KUBECONFIG}
+    - kubectl apply -f crossplane-bcp/clusters/jcp/clusterclaim.yaml
+

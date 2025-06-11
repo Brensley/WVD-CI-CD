@@ -3,4 +3,4 @@ kind: Configuration
 metadata:
   name: jcp
 spec:
-  package: ${DEV_REGISTRY}/jcp-config-bundle:latest
+  package: jcp-config-bundle:latest
