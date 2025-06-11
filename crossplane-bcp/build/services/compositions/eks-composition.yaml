@@ -17,7 +17,7 @@ spec:
           forProvider:
             region: us-east-1
             version: "1.29"
-            roleArn: arn:aws:iam::123456789012:role/eks-control-plane
+            roleArn: "" # patched from controlPlaneRoleArn parameter
             resourcesVpcConfig:
               endpointPublicAccess: true
         patches:
@@ -25,6 +25,8 @@ spec:
             toFieldPath: spec.forProvider.region
           - fromFieldPath: spec.parameters.version
             toFieldPath: spec.forProvider.version
+          - fromFieldPath: spec.parameters.controlPlaneRoleArn
+            toFieldPath: spec.forProvider.roleArn
     - name: nodegroup
       base:
         apiVersion: eks.aws.upbound.io/v1beta1
@@ -34,9 +36,8 @@ spec:
             region: us-east-1
             clusterNameSelector:
               matchControllerRef: true
-            nodeRoleArn: arn:aws:iam::123456789012:role/eks-node-role
-            subnetIds:
-              - subnet-0123456789abcdef0
+            nodeRoleArn: ""   # patched from nodeRoleArn parameter
+            subnetIds: []     # patched from nodeSubnetIds parameter
             instanceType: t3.medium # default instance type
             diskSize: 50            # default disk size in GiB
             scalingConfig:
@@ -46,6 +47,10 @@ spec:
       patches:
         - fromFieldPath: spec.parameters.region
           toFieldPath: spec.forProvider.region
+        - fromFieldPath: spec.parameters.nodeRoleArn
+          toFieldPath: spec.forProvider.nodeRoleArn
+        - fromFieldPath: spec.parameters.nodeSubnetIds
+          toFieldPath: spec.forProvider.subnetIds
         - fromFieldPath: spec.parameters.instanceType
           toFieldPath: spec.forProvider.instanceType
         - fromFieldPath: spec.parameters.diskSize
@@ -59,9 +64,8 @@ spec:
             region: us-east-1
             clusterNameSelector:
               matchControllerRef: true
-            nodeRoleArn: arn:aws:iam::123456789012:role/eks-jcp-node-role
-            subnetIds:
-              - subnet-0123456789abcdef0
+            nodeRoleArn: ""   # patched from jcpNodeRoleArn parameter
+            subnetIds: []     # patched from jcpSubnetIds parameter
             instanceType: t3.large # default instance type for JCP
             diskSize: 100          # default disk size in GiB
             scalingConfig:
@@ -71,6 +75,10 @@ spec:
       patches:
         - fromFieldPath: spec.parameters.region
           toFieldPath: spec.forProvider.region
+        - fromFieldPath: spec.parameters.jcpNodeRoleArn
+          toFieldPath: spec.forProvider.nodeRoleArn
+        - fromFieldPath: spec.parameters.jcpSubnetIds
+          toFieldPath: spec.forProvider.subnetIds
         - fromFieldPath: spec.parameters.jcpInstanceType
           toFieldPath: spec.forProvider.instanceType
         - fromFieldPath: spec.parameters.jcpDiskSize

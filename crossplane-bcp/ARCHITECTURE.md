@@ -42,17 +42,14 @@ installations.
 ### AWS Prerequisites
 
 The EKS composition in `build/services/compositions/eks-composition.yaml`
-includes placeholder values for the cluster and node group IAM roles and the
-subnet IDs. Replace these with valid values from your AWS account before
-deploying the control plane:
+exposes parameters for IAM roles and subnet IDs so you can supply values from
+your AWS account when deploying the control plane:
 
-- `roleArn` must reference an IAM role with permissions for the EKS control
-  plane, for example `arn:aws:iam::123456789012:role/eks-control-plane`.
-- `nodeRoleArn` values should be IAM roles used by each NodeGroup,
-  such as `arn:aws:iam::123456789012:role/eks-node-role` for the BCP and
-  `arn:aws:iam::123456789012:role/eks-jcp-node-role` for the JCP.
-- `subnetIds` must list the actual subnet IDs where the nodes will run,
-  e.g. `subnet-0123456789abcdef0`.
+- `controlPlaneRoleArn` &mdash; IAM role used by the EKS control plane.
+- `nodeRoleArn` &mdash; IAM role for the BCP NodeGroup.
+- `nodeSubnetIds` &mdash; subnet IDs for the BCP nodes.
+- `jcpNodeRoleArn` &mdash; IAM role for the JCP NodeGroup.
+- `jcpSubnetIds` &mdash; subnet IDs for the JCP nodes.
 
-Specify the `instanceType` and `diskSize` parameters for each NodeGroup
-to match the recommended sizes above.
+Provide these parameters along with `instanceType` and `diskSize` to
+match the recommended sizes above.
