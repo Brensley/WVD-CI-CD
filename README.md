@@ -21,9 +21,13 @@ Refer to `crossplane-bcp/README.md` for detailed instructions on deploying the B
 The `.gitlab-ci.yml` pipeline builds, pushes and now deploys the Crossplane configuration. To execute the pipeline end-to-end:
 
 1. Set `DEV_REGISTRY` to the container registry where packages should be pushed. The default value in `.gitlab-ci.yml` is `registry.example.com/dev`, but you must replace this with the URL of your actual registry (GitLab registry, ECR, etc.) for the push stage to succeed.
-2. Retrieve the kubeconfig for the **target** cluster using `aws eks update-kubeconfig --name <cluster>` (or your provider's command) and store its contents in GitLab as `KUBECONFIG_DATA`.
-3. Ensure Crossplane is already installed on the cluster referenced by `KUBECONFIG_DATA`.
-4. Trigger the pipeline. After the push stage completes, the `deploy_bcp` and `deploy_jcp` jobs apply the manifests under `crossplane-bcp/clusters/` using `kubectl`.
+2. Retrieve the kubeconfig for the **target** cluster using your provider's CLI, for example:
+   ```bash
+   aws eks update-kubeconfig --name <cluster>
+   ```
+3. Paste the contents of the generated file into the GitLab CI variable `KUBECONFIG_DATA`.
+4. Ensure Crossplane is already installed on the cluster referenced by this kubeconfig.
+5. Trigger the pipeline. After the push stage completes, the `deploy_bcp` and `deploy_jcp` jobs apply the manifests under `crossplane-bcp/clusters/` using `kubectl`.
 
 
 ### Extracting the kubeconfig
