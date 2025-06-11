@@ -45,3 +45,17 @@ kubectl config view --minify --raw > kubeconfig
 ```
 
 Copy the file's contents into the `KUBECONFIG_DATA` variable in GitLab before running the deploy jobs.
+
+### Harbor Access
+
+The `harbor-helm.yaml` manifest deploys Harbor with `expose.type` set to `clusterIP`,
+making the registry reachable only inside the cluster. If external access is
+required, update `build/services/harbor-helm.yaml` with one of the following
+options:
+
+1. Set `expose.type` to `nodePort` or configure an Ingress controller so the
+   service is reachable from outside the cluster.
+2. Provide an external database and storage backend instead of the default
+   in-cluster services for production deployments.
+
+After modifying the file, rebuild the bundle and redeploy the control plane.
