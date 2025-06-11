@@ -59,3 +59,10 @@ options:
    in-cluster services for production deployments.
 
 After modifying the file, rebuild the bundle and redeploy the control plane.
+
+### JCP Manifest Source
+
+The `build/services/jcp-apps.yaml` manifest points Argo CD to the Git repository
+that contains the JCP application manifests. The default value is a placeholder
+`https://example.com/git/jcp-manifests`. Replace this URL with the location of
+your actual manifests before running the deploy jobs.
