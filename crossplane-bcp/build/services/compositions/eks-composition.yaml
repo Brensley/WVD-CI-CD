@@ -17,7 +17,7 @@ spec:
           forProvider:
             region: us-east-1
             version: "1.29"
-            roleArn: example # TODO: replace with your IAM role ARN
+            roleArn: arn:aws:iam::123456789012:role/eks-control-plane
             resourcesVpcConfig:
               endpointPublicAccess: true
         patches:
@@ -34,9 +34,9 @@ spec:
             region: us-east-1
             clusterNameSelector:
               matchControllerRef: true
-            nodeRoleArn: example # TODO: replace with the node group role ARN
+            nodeRoleArn: arn:aws:iam::123456789012:role/eks-node-role
             subnetIds:
-              - subnet-example # TODO: update with actual subnet IDs
+              - subnet-0123456789abcdef0
             instanceType: t3.medium # default instance type
             diskSize: 50            # default disk size in GiB
             scalingConfig:
@@ -59,9 +59,9 @@ spec:
             region: us-east-1
             clusterNameSelector:
               matchControllerRef: true
-            nodeRoleArn: example # TODO: replace with the node group role ARN
+            nodeRoleArn: arn:aws:iam::123456789012:role/eks-jcp-node-role
             subnetIds:
-              - subnet-example # TODO: update with actual subnet IDs
+              - subnet-0123456789abcdef0
             instanceType: t3.large # default instance type for JCP
             diskSize: 100          # default disk size in GiB
             scalingConfig:
