@@ -28,6 +28,14 @@ spec:
                         type: string
                       version:
                         type: string
+                      instanceType:
+                        type: string
+                      diskSize:
+                        type: integer
+                      jcpInstanceType:
+                        type: string
+                      jcpDiskSize:
+                        type: integer
                     required:
                       - region
                       - version
