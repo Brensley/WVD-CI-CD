@@ -21,6 +21,8 @@ build_packages:
   stage: build
   image: crossplane/crossplane-cli:latest
   script:
+    - crossplane xpkg build --name provider-configs.xpkg crossplane-bcp/build/providerConfigs
+    - crossplane xpkg build --name services.xpkg crossplane-bcp/build/services
     - crossplane xpkg build --name config-bundle.xpkg crossplane-bcp/config-bundle
     - crossplane xpkg build --name function-object-reader.xpkg crossplane-bcp/functions/object-reader
     - crossplane xpkg build --name function-git-reader.xpkg crossplane-bcp/functions/git-reader
@@ -86,6 +88,8 @@ push_packages:
 deploy_bcp:
   stage: deploy
   image: bitnami/kubectl:latest
+  dependencies:
+    - build_packages
   script:
     - echo "$KUBECONFIG_DATA" > ${KUBECONFIG}
     - envsubst < crossplane-bcp/clusters/bcp/crossplane.yaml | kubectl apply -f -
