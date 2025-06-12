@@ -29,7 +29,7 @@ The `.gitlab-ci.yml` file at the repo root builds the required packages and then
 
 The pipeline contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane using `kubectl crossplane install` for each package. `deploy_jcp` installs the JCP bundle in the same way, and `apply_clusterclaim` provisions an EKS cluster from `clusters/jcp/clusterclaim.yaml`. These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster.
 
-Edit the `region` or `version` fields in `clusters/jcp/clusterclaim.yaml` if your environment needs different settings.
+The ClusterClaim manifest also defines NodeGroup sizing parameters. Adjust the `instanceType`, `diskSize`, and `desiredSize` values to suit your environment before running the pipeline.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
 

@@ -32,6 +32,9 @@ spec:
         spec:
           forProvider:
             region: us-east-1
+            instanceTypes:
+              - t3.medium
+            diskSize: 20
             clusterNameSelector:
               matchControllerRef: true
             nodeRoleArn: example
@@ -44,3 +47,13 @@ spec:
       patches:
         - fromFieldPath: spec.parameters.region
           toFieldPath: spec.forProvider.region
+        - fromFieldPath: spec.parameters.instanceType
+          toFieldPath: spec.forProvider.instanceTypes[0]
+        - fromFieldPath: spec.parameters.diskSize
+          toFieldPath: spec.forProvider.diskSize
+        - fromFieldPath: spec.parameters.desiredSize
+          toFieldPath: spec.forProvider.scalingConfig.desiredSize
+        - fromFieldPath: spec.parameters.maxSize
+          toFieldPath: spec.forProvider.scalingConfig.maxSize
+        - fromFieldPath: spec.parameters.minSize
+          toFieldPath: spec.forProvider.scalingConfig.minSize

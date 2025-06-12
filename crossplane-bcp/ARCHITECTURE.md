@@ -29,3 +29,11 @@ The Base Control Plane (BCP) is a single‑node installation used to bootstrap t
 ### JCP Responsibilities
 - Provision workload EKS clusters via Crossplane.
 - Manage application deployments via ArgoCD with charts stored in Harbor.
+
+### Recommended Node Sizing
+The BCP cluster uses a small NodeGroup to bootstrap the first JCP. A `t3.medium`
+instance type with a 20GiB disk is sufficient for this control plane.
+
+JCP workload clusters run ArgoCD, Harbor, Keycloak, and other services. These
+clusters should use at least three `t3.large` worker nodes with 40GiB disks to
+provide adequate capacity and redundancy for production deployments.

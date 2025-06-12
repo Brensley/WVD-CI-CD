@@ -6,3 +6,8 @@ spec:
   parameters:
     region: us-east-1
     version: "1.29"
+    instanceType: t3.large
+    diskSize: 40
+    desiredSize: 3
+    maxSize: 3
+    minSize: 3
