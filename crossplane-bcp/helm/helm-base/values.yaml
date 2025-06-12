@@ -1,2 +1,2 @@
 # Local registry path used for air-gapped installations
-registry: /path/to/local/registry
+registry: ""
