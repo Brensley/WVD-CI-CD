@@ -25,8 +25,11 @@ crossplane-bcp/
 └── README.md
 ```
 
-The `.gitlab-ci.yml` file at the repo root packages these resources and pushes them to the container registry specified by `DEV_REGISTRY`.
-Optional jobs invoke the scripts in `scripts/` to destroy the BCP or JCP clusters when scheduled.
+The `.gitlab-ci.yml` file at the repo root builds the required packages and then installs them directly from the generated `.xpkg` files. Optional jobs invoke the scripts in `scripts/` to destroy the BCP or JCP clusters when scheduled.
+
+The pipeline contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane using `kubectl crossplane install` for each package. `deploy_jcp` installs the JCP bundle in the same way, and `apply_clusterclaim` provisions an EKS cluster from `clusters/jcp/clusterclaim.yaml`. These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster.
+
+The ClusterClaim manifest also defines NodeGroup sizing parameters. Adjust the `instanceType`, `diskSize`, and `desiredSize` values to suit your environment before running the pipeline.
 
 The pipeline also contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane by applying `clusters/bcp/crossplane.yaml`, then `deploy_jcp` installs the JCP using the manifests under `clusters/jcp/`.
 These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster.
@@ -38,54 +41,3 @@ Paste the file's contents into the GitLab CI variable `KUBECONFIG_DATA`.
 Ensure Crossplane is already installed on that cluster before triggering the deploy jobs.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
-
-### Required Secrets
-
-The provider configuration manifests expect three Kubernetes `Secret` objects to
-exist in the `crossplane-system` namespace. Each secret must contain credentials
-under a key named `creds`.
-
-| Secret name | Expected key | Used by |
-|-------------|--------------|---------|
-| `aws-creds` | `creds`      | AWS provider |
-| `oci-creds` | `creds`      | OCI provider |
-| `git-creds` | `creds`      | Git provider |
-
-Create these secrets before running the pipeline so the providers can
-authenticate to their respective services.
-
-
-
-### Extracting the kubeconfig
-
-Use your cloud provider's CLI, for example `aws eks update-kubeconfig --name <cluster>`, to fetch credentials and create a kubeconfig file.
-
-```bash
-aws eks update-kubeconfig --name <cluster>
-az aks get-credentials --resource-group <rg> --name <cluster>
-kubectl config view --minify --raw > kubeconfig
-```
-
-Copy the file's contents into the `KUBECONFIG_DATA` variable in GitLab before running the deploy jobs.
-Ensure Crossplane is already installed in the cluster referenced by this kubeconfig.
-
-### Harbor Access
-
-Harbor installs as a `ClusterIP` service by default. The `harbor-helm.yaml`
-manifest sets `expose.type` to `clusterIP`, so the registry is reachable only
-from within the cluster. If external access is required, update
-`build/services/harbor-helm.yaml` with one of the following options:
-
-1. Set `expose.type` to `nodePort` or configure an Ingress controller so the
-   service is reachable from outside the cluster.
-2. Provide an external database and storage backend instead of the default
-   in-cluster services for production deployments.
-
-After modifying the file, rebuild the bundle and redeploy the control plane.
-
-### JCP Manifest Source
-
-The `build/services/jcp-apps.yaml` manifest points Argo CD to the Git repository
-that contains the JCP application manifests. The default value is a placeholder
-`https://example.com/git/jcp-manifests`. Replace this URL with the location of
-your actual manifests before running the deploy jobs.

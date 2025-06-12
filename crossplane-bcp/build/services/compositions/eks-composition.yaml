@@ -34,6 +34,9 @@ spec:
         spec:
           forProvider:
             region: us-east-1
+            instanceTypes:
+              - t3.medium
+            diskSize: 20
             clusterNameSelector:
               matchControllerRef: true
             nodeRoleArn: ""   # patched from nodeRoleArn parameter
@@ -47,39 +50,3 @@ spec:
       patches:
         - fromFieldPath: spec.parameters.region
           toFieldPath: spec.forProvider.region
-        - fromFieldPath: spec.parameters.nodeRoleArn
-          toFieldPath: spec.forProvider.nodeRoleArn
-        - fromFieldPath: spec.parameters.nodeSubnetIds
-          toFieldPath: spec.forProvider.subnetIds
-        - fromFieldPath: spec.parameters.instanceType
-          toFieldPath: spec.forProvider.instanceType
-        - fromFieldPath: spec.parameters.diskSize
-          toFieldPath: spec.forProvider.diskSize
-    - name: jcp-nodegroup
-      base:
-        apiVersion: eks.aws.upbound.io/v1beta1
-        kind: NodeGroup
-        spec:
-          forProvider:
-            region: us-east-1
-            clusterNameSelector:
-              matchControllerRef: true
-            nodeRoleArn: ""   # patched from jcpNodeRoleArn parameter
-            subnetIds: []     # patched from jcpSubnetIds parameter
-            instanceType: t3.large # default instance type for JCP
-            diskSize: 100          # default disk size in GiB
-            scalingConfig:
-              desiredSize: 3
-              maxSize: 5
-              minSize: 1
-      patches:
-        - fromFieldPath: spec.parameters.region
-          toFieldPath: spec.forProvider.region
-        - fromFieldPath: spec.parameters.jcpNodeRoleArn
-          toFieldPath: spec.forProvider.nodeRoleArn
-        - fromFieldPath: spec.parameters.jcpSubnetIds
-          toFieldPath: spec.forProvider.subnetIds
-        - fromFieldPath: spec.parameters.jcpInstanceType
-          toFieldPath: spec.forProvider.instanceType
-        - fromFieldPath: spec.parameters.jcpDiskSize
-          toFieldPath: spec.forProvider.diskSize

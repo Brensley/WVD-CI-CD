@@ -3,4 +3,4 @@ kind: Configuration
 metadata:
   name: bcp
 spec:
-  package: ${DEV_REGISTRY}/bcp-config-bundle:latest
+  package: bcp-config-bundle:latest
