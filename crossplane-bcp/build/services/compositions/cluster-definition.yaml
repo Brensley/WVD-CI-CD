@@ -32,6 +32,12 @@ spec:
                         type: string
                       diskSize:
                         type: integer
+                      desiredSize:
+                        type: integer
+                      maxSize:
+                        type: integer
+                      minSize:
+                        type: integer
                       jcpInstanceType:
                         type: string
                       jcpDiskSize:
@@ -53,6 +59,11 @@ spec:
                     required:
                       - region
                       - version
+                      - instanceType
+                      - diskSize
+                      - desiredSize
+                      - maxSize
+                      - minSize
                 required:
                   - parameters
             required:
