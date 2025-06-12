@@ -25,8 +25,12 @@ crossplane-bcp/
 └── README.md
 ```
 
-The `.gitlab-ci.yml` file at the repo root packages these resources and pushes them to the container registry specified by `DEV_REGISTRY`.
-Optional jobs invoke the scripts in `scripts/` to destroy the BCP or JCP clusters when scheduled.
+The `.gitlab-ci.yml` file at the repo root builds the required packages and then installs them directly from the generated `.xpkg` files. Optional jobs invoke the scripts in `scripts/` to destroy the BCP or JCP clusters when scheduled.
+
+The pipeline contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane using `kubectl crossplane install` for each package. `deploy_jcp` installs the JCP bundle in the same way, and `apply_clusterclaim` provisions an EKS cluster from `clusters/jcp/clusterclaim.yaml`. These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster.
+
+The ClusterClaim manifest also defines NodeGroup sizing parameters. Adjust the `instanceType`, `diskSize`, and `desiredSize` values to suit your environment before running the pipeline.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
+
 
