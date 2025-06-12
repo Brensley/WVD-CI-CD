@@ -1,1 +1,2 @@
-registry: ${DEV_REGISTRY}
+# Local registry path used for air-gapped installations
+registry: /path/to/local/registry
