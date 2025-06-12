@@ -18,3 +18,14 @@ Refer to `crossplane-bcp/README.md` for detailed instructions on deploying the B
 
 ## Running the Pipeline
 
+Before invoking the GitLab jobs that deploy the Base Control Plane or the JCP,
+you must provide credentials for the target Kubernetes cluster. Retrieve the
+kubeconfig from your provider, for example:
+
+```bash
+aws eks update-kubeconfig --name <cluster>
+```
+
+Copy the contents of the generated kubeconfig file and save them in a protected
+GitLab CI variable named `KUBECONFIG_DATA`. The pipeline reads this variable to
+authenticate against your cluster when applying manifests.

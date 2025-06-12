@@ -37,7 +37,7 @@ Retrieve the kubeconfig using your provider's CLI, for example:
 ```bash
 aws eks update-kubeconfig --name <cluster>
 ```
-Paste the file's contents into the GitLab CI variable `KUBECONFIG_DATA`.
+Copy the contents of the generated file into a protected GitLab CI variable named `KUBECONFIG_DATA`.
 Ensure Crossplane is already installed on that cluster before triggering the deploy jobs.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
