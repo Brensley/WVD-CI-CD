@@ -13,21 +13,14 @@ build_xpkgs:
     - crossplane xpkg build --name provider-configs.xpkg crossplane-bcp/build/providerConfigs
     - crossplane xpkg build --name services.xpkg crossplane-bcp/build/services
     - crossplane xpkg build --name jcp-config-bundle.xpkg crossplane-bcp/jcp-config-bundle
-  artifacts:
-    paths:
-      - provider-configs.xpkg
-      - services.xpkg
-      - jcp-config-bundle.xpkg
-
-build_packages:
-  stage: build
-  image: crossplane/crossplane-cli:latest
-  script:
     - crossplane xpkg build --name config-bundle.xpkg crossplane-bcp/config-bundle
     - crossplane xpkg build --name function-object-reader.xpkg crossplane-bcp/functions/object-reader
     - crossplane xpkg build --name function-git-reader.xpkg crossplane-bcp/functions/git-reader
   artifacts:
     paths:
+      - provider-configs.xpkg
+      - services.xpkg
+      - jcp-config-bundle.xpkg
       - config-bundle.xpkg
       - function-object-reader.xpkg
       - function-git-reader.xpkg
