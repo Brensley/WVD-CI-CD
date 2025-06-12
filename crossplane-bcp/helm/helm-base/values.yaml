@@ -1,1 +1,1 @@
-registry: registry.example.com/dev
+registry: ${DEV_REGISTRY}

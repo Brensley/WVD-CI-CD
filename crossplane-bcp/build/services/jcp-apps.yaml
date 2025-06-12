@@ -4,6 +4,7 @@ metadata:
   name: jcp-apps
 spec:
   forProvider:
+    # Replace with the repository hosting your JCP manifests
     sourceRepoURL: https://example.com/git/jcp-manifests
     path: apps
     targetRevision: HEAD

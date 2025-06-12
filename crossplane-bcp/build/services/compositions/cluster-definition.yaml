@@ -28,6 +28,28 @@ spec:
                         type: string
                       version:
                         type: string
+                      instanceType:
+                        type: string
+                      diskSize:
+                        type: integer
+                      jcpInstanceType:
+                        type: string
+                      jcpDiskSize:
+                        type: integer
+                      controlPlaneRoleArn:
+                        type: string
+                      nodeRoleArn:
+                        type: string
+                      nodeSubnetIds:
+                        type: array
+                        items:
+                          type: string
+                      jcpNodeRoleArn:
+                        type: string
+                      jcpSubnetIds:
+                        type: array
+                        items:
+                          type: string
                     required:
                       - region
                       - version

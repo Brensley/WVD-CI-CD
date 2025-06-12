@@ -31,6 +31,13 @@ The pipeline contains a `deploy` stage. `deploy_bcp` installs the Base Control P
 
 The ClusterClaim manifest also defines NodeGroup sizing parameters. Adjust the `instanceType`, `diskSize`, and `desiredSize` values to suit your environment before running the pipeline.
 
+The pipeline also contains a `deploy` stage. `deploy_bcp` installs the Base Control Plane by applying `clusters/bcp/crossplane.yaml`, then `deploy_jcp` installs the JCP using the manifests under `clusters/jcp/`.
+These jobs require the `KUBECONFIG_DATA` variable to be set with credentials for the target Kubernetes cluster.
+Retrieve the kubeconfig using your provider's CLI, for example:
+```bash
+aws eks update-kubeconfig --name <cluster>
+```
+Paste the file's contents into the GitLab CI variable `KUBECONFIG_DATA`.
+Ensure Crossplane is already installed on that cluster before triggering the deploy jobs.
+
 See [ARCHITECTURE.md](ARCHITECTURE.md) for additional details about execution environments and trust zones.
-
-

@@ -22,18 +22,10 @@ Every TZ has its own network and RBAC boundaries. Networks connect transparently
 The Base Control Plane (BCP) is a single‑node installation used to bootstrap the first JCP in air‑gapped environments. The Joint Control Plane (JCP) then manages downstream EEs and all of the resources described above.
 
 ### BCP Responsibilities
-- Build and push Crossplane packages and Helm charts to an internal registry.
+- Build Crossplane packages into `.xpkg` files. The CI build stage produces these artifacts for direct installation.
 - Deploy an EKS cluster using Crossplane compositions.
 - Install ArgoCD which deploys Keycloak, Backstage, Netbox and other services.
 
 ### JCP Responsibilities
 - Provision workload EKS clusters via Crossplane.
 - Manage application deployments via ArgoCD with charts stored in Harbor.
-
-### Recommended Node Sizing
-The BCP cluster uses a small NodeGroup to bootstrap the first JCP. A `t3.medium`
-instance type with a 20GiB disk is sufficient for this control plane.
-
-JCP workload clusters run ArgoCD, Harbor, Keycloak, and other services. These
-clusters should use at least three `t3.large` worker nodes with 40GiB disks to
-provide adequate capacity and redundancy for production deployments.

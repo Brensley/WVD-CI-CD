@@ -18,9 +18,3 @@ Refer to `crossplane-bcp/README.md` for detailed instructions on deploying the B
 
 ## Running the Pipeline
 
-The `.gitlab-ci.yml` pipeline builds and then deploys the Crossplane configuration directly from the generated `.xpkg` files. To run it end-to-end:
-
-1. Provide a `KUBECONFIG_DATA` variable in GitLab CI containing credentials for the target Kubernetes cluster.
-2. Trigger the pipeline. After the build stage completes, the `deploy_bcp`, `deploy_jcp`, and `apply_clusterclaim` jobs install each package using `kubectl crossplane install` and then apply the `ClusterClaim` manifest.
-   Edit `crossplane-bcp/clusters/jcp/clusterclaim.yaml` if your environment requires different region, Kubernetes version, or node sizing before running the pipeline.
-
